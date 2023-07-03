@@ -109,3 +109,24 @@ To run a local Selenium Server, you will need to have the Java Development Kit (
     protractor conf.e2e.js --suite=auth     # To tests authentication
     protractor conf.e2e.js --suite=full     # To test all the platform authenticated
     ```
+
+
+#### Dropshiplifestyle Notes:
+```
+npm start
+~ This would build dist folder
+
+npx gulp deploy
+~ Build production dist
+
+docker build --no-cache -f docker/Dockerfile -t taigaio/taiga-front:latest .
+~ Build Docker Image
+
+# Build
+
+rm -rf dist
+~ Delete dist folder
+
+gulp deploy
+~ Deploy changes on code 
+~ Delete dist/image folder

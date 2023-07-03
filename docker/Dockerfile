@@ -12,6 +12,7 @@ COPY docker/conf.json.template /
 COPY docker/config_env_subst.sh /docker-entrypoint.d/30_config_env_subst.sh
 # NOTE: Added this so that we could use our own generated dist folder
 COPY dist /taiga/dist
+COPY dist/index.html /taiga/dist/index.html
 
 RUN set -eux; \
     apk update; \
