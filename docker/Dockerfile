@@ -10,6 +10,8 @@ LABEL maintainer="support@taiga.io"
 COPY docker/default.conf /etc/nginx/conf.d/default.conf
 COPY docker/conf.json.template /
 COPY docker/config_env_subst.sh /docker-entrypoint.d/30_config_env_subst.sh
+# NOTE: Added this so that we could use our own generated dist folder
+COPY dist /taiga/dist
 
 RUN set -eux; \
     apk update; \
@@ -17,10 +19,11 @@ RUN set -eux; \
        subversion; \
     apk add \
        bash; \
+    # NOTE: Commented out since we are building our own dist folder
     # Install taiga-front core
-    wget https://github.com/kaleidos-ventures/taiga-front-dist/archive/6.6.2.zip -O source.zip; \
-    unzip source.zip; \
-    mv /taiga-front-dist-6.6.2 /taiga; \
+    #    wget https://github.com/kaleidos-ventures/taiga-front-dist/archive/6.6.2.zip -O source.zip; \
+    #    unzip source.zip; \
+    #    mv /taiga-front-dist-6.6.2 /taiga; \
     mv /conf.json.template taiga/dist/; \
     chmod +x /docker-entrypoint.d/30_config_env_subst.sh; \
     # Install taiga-front contribs
@@ -32,7 +35,8 @@ RUN set -eux; \
     cd /; \
     # Remove unused dependencies
     apk del --no-cache .build-deps; \
-    rm source.zip; \
+    # NOTE: No need for this since we didn't download the frontend build
+    #    rm source.zip; \
     # Ready for nginx
     mv /taiga/dist/* /usr/share/nginx/html; \
     rm -rf /taiga
